@@ -13,6 +13,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider)
     $ocLazyLoadProvider.config({
         debug: false
     });
+
     $stateProvider
         // 首页
         .state('index', {
@@ -24,6 +25,11 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider)
             url: "/main",
             templateUrl: "views/main.html",
             data: { pageTitle: '首页' }
+        })
+        .state('login', {
+            url: "/login",
+            templateUrl: "views/login.html",
+            data: { pageTitle: '请登录', specialClass: 'gray-bg' }
         })
         .state('user', {
             abstract: true, url: "/user",
