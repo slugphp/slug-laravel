@@ -7,10 +7,6 @@
 
 $(document).ready(function () {
 
-    // Append config box / Only for demo purpose
-    //$.get("views/skin-config.html", function (data) {
-    //    $('body').append(data);
-    //});
 
     // Full height of sidebar
     function fix_height() {
@@ -38,10 +34,9 @@ $(document).ready(function () {
 
     }
 
-
     $(window).bind("load resize scroll", function() {
         if(!$("body").hasClass('body-small')) {
-            fix_height();
+                fix_height();
         }
     });
 
@@ -54,10 +49,10 @@ $(document).ready(function () {
         }
     });
 
-
     setTimeout(function(){
         fix_height();
-    })
+    });
+
 });
 
 // Minimalize menu when screen is less than 768px
@@ -69,4 +64,4 @@ $(function() {
             $('body').removeClass('body-small')
         }
     })
-})
+});
