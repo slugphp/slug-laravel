@@ -11,6 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::any('/', function () {
+    return view('index');
+});
+
+Route::any('/user/login', function () {
+    return "view('welcome')";
+});
+Route::any('/user/login', function () {
+    return "view('welcome')";
 });

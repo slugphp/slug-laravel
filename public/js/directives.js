@@ -12,9 +12,11 @@ function pageTitle($rootScope, $timeout) {
         link: function(scope, element) {
             var listener = function(event, toState, toParams, fromState, fromParams) {
                 // Default title - load on Dashboard 1
-                var title = '跳板机权限管理 | 后台';
+                var title = AppConfig.name + ' | 后台';
                 // Create your own title pattern
-                if (toState.data && toState.data.pageTitle) title = '跳板机权限管理 | ' + toState.data.pageTitle;
+                if (toState.data && toState.data.pageTitle) {
+                    title = AppConfig.name + ' | ' + toState.data.pageTitle;
+                }
                 $timeout(function() {
                     element.text(title);
                 });

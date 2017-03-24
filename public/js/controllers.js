@@ -1,65 +1,120 @@
 (function () {
 
+    var app = angular.module('inspinia');
 
     // 首页
-    function MainCtrl($location)
-    {
-        // $location.path('/login')
-        console.log('var')
-        this.userName = '您好，' + (getCookie('USER_NAME') || '管理员');
-        this.helloText = '欢迎来到后台管理系统';
-        this.descriptionText = 'Beta 0.3';
-    };
+    app.controller('LoginCtrl', function ($scope, $state, $http, Base64) {
 
-    // 用户列表页面
-    function UserListCtrl($scope, $http, $filter, DTOptionsBuilder, DTColumnBuilder, $uibModal, notify, SweetAlert)
-    {};
+        this.AppConfig = AppConfig
+        $scope.user = {};
 
-    // 用户管理弹窗
-    function UserModifyCtrl($scope, $http, DTOptionsBuilder, DTColumnBuilder, $uibModalInstance, notify, $sce, user, dtInstance)
-    {};
+        $scope.doLogin = function() {
+            $scope.authError = ""
+            var authdata = Base64.encode($scope.user.username + ':' + $scope.user.password);
+            $http.post(parseHost('/user/login'), {
+                authdata: authdata
+            }, postConfig).success(function(data, status, headers, config) {
+                console.log('var')
+                $state.go('index.main');
+            });
+        }
+    });
 
-    // 日志列表页
-    function AccesslogCtrl($scope, $http, $filter, DTOptionsBuilder, DTColumnBuilder, $uibModal, notify)
-    {};
+    // 首页
+    app.controller('MainCtrl', function ($scope, $state, $http, Base64) {
+        $scope.AppConfig = AppConfig
+        console.log(AppConfig)
+    });
+
+    app.factory('Base64',function(){
+        var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+        return {
+            encode: function (input) {
+                var output = "";
+                var chr1, chr2, chr3 = "";
+                var enc1, enc2, enc3, enc4 = "";
+                var i = 0;
+
+                do {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+
+                    output = output +
+                        keyStr.charAt(enc1) +
+                        keyStr.charAt(enc2) +
+                        keyStr.charAt(enc3) +
+                        keyStr.charAt(enc4);
+                    chr1 = chr2 = chr3 = "";
+                    enc1 = enc2 = enc3 = enc4 = "";
+                } while (i < input.length);
+
+                return output;
+            },
+
+            decode: function (input) {
+                var output = "";
+                var chr1, chr2, chr3 = "";
+                var enc1, enc2, enc3, enc4 = "";
+                var i = 0;
+
+                // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
+                var base64test = /[^A-Za-z0-9\+\/\=]/g;
+                if (base64test.exec(input)) {
+                    window.alert("There were invalid base64 characters in the input text.\n" +
+                        "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
+                        "Expect errors in decoding.");
+                }
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+                do {
+                    enc1 = keyStr.indexOf(input.charAt(i++));
+                    enc2 = keyStr.indexOf(input.charAt(i++));
+                    enc3 = keyStr.indexOf(input.charAt(i++));
+                    enc4 = keyStr.indexOf(input.charAt(i++));
+
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+
+                    output = output + String.fromCharCode(chr1);
+
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+
+                    chr1 = chr2 = chr3 = "";
+                    enc1 = enc2 = enc3 = enc4 = "";
+
+                } while (i < input.length);
+
+                return output;
+            }
+        };
+    })
+
 
     var postConfig = {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
         transformRequest: function(data){
             return $.param(data);
         }
     }
-    function DTOptionsBuilderFn(DTOptionsBuilder, url, orderNum, rowCallback, fnCallback) {}
 
-    var datatablesLangCn = {
-        "sProcessing": "处理中...",
-        "sLengthMenu": "每页显示 _MENU_ 项结果",
-        "sZeroRecords": "没有匹配结果",
-        "sInfo": "本页显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-        "sInfoPostFix": "",
-        "sSearch": "搜索:",
-        "sUrl": "",
-        "sEmptyTable": "载入中...",
-        "sLoadingRecords": "载入中...",
-        "sInfoThousands": ",",
-        "oPaginate": {
-            "sFirst": "首页",
-            "sPrevious": "上页",
-            "sNext": "下页",
-            "sLast": "末页"
-        },
-        "oAria": {
-            "sSortAscending": ": 以升序排列此列",
-            "sSortDescending": ": 以降序排列此列"
-        }
-    }
-
-    angular
-        .module('inspinia')
-        .controller('MainCtrl', MainCtrl)
-        .controller('UserListCtrl', UserListCtrl)
-        .controller('UserModifyCtrl', UserModifyCtrl)
-        .controller('AccesslogCtrl', AccesslogCtrl)
 })();

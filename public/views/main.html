@@ -1,13 +1,13 @@
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight" ng-controller="MainCtrl">
     <div class="row">
         <div class="col-lg-12"><br><br><br></div>
         <div class="col-lg-12">
             <div class="text-center m-t-lg">
                 <h1>
-                    {{main.helloText}}
+                    欢迎来到{{AppConfig.name}}
                 </h1>
                 <small>
-                    {{main.descriptionText}}
+                    {{AppConfig.version}}
                 </small>
             </div>
         </div>
@@ -17,22 +17,6 @@
                 帮助：<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;一个用户可以有多个【机器组】的权限；<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;一个机器组包含多部【机器】；<br>
-            </div>
-            <div class="text-left m-t-lg">
-                示例：<br>
-                * 当您想给 zhangsan 添加一组 [机器a, 机器b, ...] 权限时：<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;1. 添加机器：在【机器管理】中添加所有机器<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;2. 添加机器组：在【机器组管理】中添加机器组<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;3. 用户赋权：在【用户管理】中给用户添加机器组权限<br>
-                * 当您想给 lisi 添加已有机器组权限时：<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;3. 用户赋权：在【用户管理】中给用户添加机器组权限<br>
-                * 您可以在【用户管理->编辑】里查看用户的机器组、id_rsa.pub<br>
-            </div>
-            <div class="text-left m-t-lg">
-                文档：<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://faq.jumpbox.ifengidc.com/" target="_blank">跳板机使用说明</a><br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://admin.jumpbox.ifengidc.com/apidoc/public.html" target="_blank">跳板机Api</a><br>
-                &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://admin.jumpbox.ifengidc.com/apidoc/" target="_blank">PmsApi</a><br>
             </div>
         </div>
     </div>

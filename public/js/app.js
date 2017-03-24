@@ -7,21 +7,22 @@
         'ngIdle',                       // Idle timer
         'ngSanitize'                    // ngSanitize
     ])
-
-    // var userToken = getCookie('USER_TOKEN') || false;
-    // if (!userToken) {
-    //     toLoginPage();
-    // }
 })();
 
+// 全局配置、方法
 
-function toLoginPage() {
-    console.log('login func')
-    if (window.history && window.history.pushState) {
-        history.pushState({},"need_login","./#/login");
-    } else {
-        window.location.href="./"
-    }
+var AppConfig = {
+    host: "http://172.17.9.92:8000",
+    name: '后台管理系统',
+    company: 'wilon.github.io',
+    version: 'Beta 0.1',
+    year: new Date().getFullYear()
+}
+
+function parseHost(path)
+{
+    return path;
+    return "index.php?" + path;
 }
 
 function getCookie(name)

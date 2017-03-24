@@ -1,20 +1,22 @@
 (function () {
-/**
- * INSPINIA - Responsive Admin Theme
- *
- * Inspinia theme use AngularUI Router to manage routing and views
- * Each view are defined as state.
- * Initial there are written state for all view in theme.
- *
- */
-function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider)
-{
-    $urlRouterProvider.otherwise("/index/main");
+
+function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
+
+    $urlRouterProvider.otherwise("/login");
+
     $ocLazyLoadProvider.config({
         debug: false
     });
 
     $stateProvider
+        .state('login', {
+            url: "/login",
+            templateUrl: "views/login.html",
+            data: {
+                pageTitle: '请登录',
+                specialClass: 'gray-bg'
+            }
+        })
         // 首页
         .state('index', {
             abstract: true,
@@ -25,87 +27,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider)
             url: "/main",
             templateUrl: "views/main.html",
             data: { pageTitle: '首页' }
-        })
-        .state('login', {
-            url: "/login",
-            templateUrl: "views/login.html",
-            data: { pageTitle: '请登录', specialClass: 'gray-bg' }
-        })
-        .state('user', {
-            abstract: true, url: "/user",
-            templateUrl: "views/common/content.html",
-        })
-        .state('user.list', {
-            url: "/list",
-            templateUrl: "views/user_list.html",
-            data: { pageTitle: '用户管理' },
-            resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            serie: true,
-                            files: ['js/plugins/dataTables/datatables.min.js','css/plugins/dataTables/datatables.min.css']
-                        },
-                        {
-                            serie: true,
-                            name: 'datatables',
-                            files: ['js/plugins/dataTables/angular-datatables.min.js']
-                        },
-                        {
-                            serie: true,
-                            name: 'datatables.buttons',
-                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
-                        },
-                        {
-                            name: 'cgNotify',
-                            files: ['css/plugins/angular-notify/angular-notify.min.css','js/plugins/angular-notify/angular-notify.min.js']
-                        },
-                        {
-                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
-                        },
-                        {
-                            name: 'oitozero.ngSweetAlert',
-                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
-                        }
-                    ]);
-                }
-            }
-        })
-        .state('user.accesslog', {
-            url: "/accesslog",
-            templateUrl: "views/user_access_log.html",
-            data: { pageTitle: '查看操作日志' },
-            resolve: {
-                loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            serie: true,
-                            files: ['js/plugins/dataTables/datatables.min.js','css/plugins/dataTables/datatables.min.css']
-                        },
-                        {
-                            serie: true,
-                            name: 'datatables',
-                            files: ['js/plugins/dataTables/angular-datatables.min.js']
-                        },
-                        {
-                            serie: true,
-                            name: 'datatables.buttons',
-                            files: ['js/plugins/dataTables/angular-datatables.buttons.min.js']
-                        },
-                        {
-                            name: 'cgNotify',
-                            files: ['css/plugins/angular-notify/angular-notify.min.css','js/plugins/angular-notify/angular-notify.min.js']
-                        },
-                        {
-                            files: ['js/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
-                        },
-                        {
-                            name: 'oitozero.ngSweetAlert',
-                            files: ['js/plugins/sweetalert/angular-sweetalert.min.js']
-                        }
-                    ]);
-                }
-            }
         })
 }
 
