@@ -2,14 +2,19 @@
 
 function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
 
-    $urlRouterProvider.otherwise("/login");
+    $urlRouterProvider.otherwise("index/main");
 
     $ocLazyLoadProvider.config({
         debug: false
     });
 
     $stateProvider
-        .state('login', {
+        .state('auth', {
+            abstract: true,
+            url: "/auth",
+            templateUrl: ''
+        })
+        .state('auth.login', {
             url: "/login",
             templateUrl: "views/login.html",
             data: {
@@ -21,7 +26,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
         .state('index', {
             abstract: true,
             url: "/index",
-            templateUrl: "views/common/content.html",
+            templateUrl: "views/common/content.html"
         })
         .state('index.main', {
             url: "/main",

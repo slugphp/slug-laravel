@@ -3,30 +3,57 @@
     var app = angular.module('inspinia');
 
     // 首页
-    app.controller('LoginCtrl', function ($scope, $state, $http, Base64) {
 
-        this.AppConfig = AppConfig
+    app.controller('LoginCtrl', function ($scope, $http, $state, Base64, locals) {
+
+        $scope.AppConfig = AppConfig
+
         $scope.user = {};
 
+        $http.post(parseHost('/auth/check'), {}, postConfig).success(function(data, status, headers, config) {
+            $state.go('index.main');
+        });
+
         $scope.doLogin = function() {
-            $scope.authError = ""
-            var authdata = Base64.encode($scope.user.username + ':' + $scope.user.password);
-            $http.post(parseHost('/user/login'), {
-                authdata: authdata
+            var auth = Base64.encode($scope.user.name + '|' + $scope.user.password);
+            $http.post(parseHost('/auth/login'), {
+                auth: auth
             }, postConfig).success(function(data, status, headers, config) {
-                console.log('var')
                 $state.go('index.main');
+                locals.set('auth', auth)
+            }).error(function(data, status, headers, config) {
+                alert('密码错误，请确认后重试');
             });
         }
     });
 
     // 首页
     app.controller('MainCtrl', function ($scope, $state, $http, Base64) {
+        $http.post(parseHost('/auth/check'), {}, postConfig).error(function(data, status, headers, config) {
+            $state.go('auth.login');
+        });
         $scope.AppConfig = AppConfig
-        console.log(AppConfig)
+        // console.log(AppConfig)
     });
 
-    app.factory('Base64',function(){
+    app.factory('locals', function($window) {
+        return{        //存储单个属性
+            set :function(key,value){
+              $window.localStorage[key]=value;
+            },        //读取单个属性
+            get:function(key,defaultValue){
+              return  $window.localStorage[key] || defaultValue;
+            },        //存储对象，以JSON格式存储
+            setObject:function(key,value){
+              $window.localStorage[key]=JSON.stringify(value);
+            },        //读取对象
+            getObject: function (key) {
+              return JSON.parse($window.localStorage[key] || '{}');
+            }
+
+          }
+    });
+    app.factory('Base64', function() {
         var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
         return {
             encode: function (input) {

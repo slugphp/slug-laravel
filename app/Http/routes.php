@@ -11,13 +11,14 @@
 |
 */
 
-Route::any('/', function () {
-    return view('index');
-});
 
-Route::any('/user/login', function () {
-    return "view('welcome')";
-});
-Route::any('/user/login', function () {
-    return "view('welcome')";
+Route::any('/', 'AuthController@index');
+
+Route::post('/auth/check', 'AuthController@check');
+Route::post('/auth/login', 'AuthController@login');
+
+Route::group(['namespace' => 'Admin'], function() {
+
+    Route::post('/user/list', 'AuthController@login');
+
 });
