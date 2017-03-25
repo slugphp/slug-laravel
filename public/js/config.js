@@ -12,7 +12,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpPr
         .state('auth', {
             abstract: true,
             url: "/auth",
-            templateUrl: ''
+            templateUrl: 'views/common/empty.html'
         })
         .state('auth.login', {
             url: "/login",
@@ -182,14 +182,17 @@ angular
     .factory('AuthInterceptor', function ($rootScope, $q, $location) {
         return {
             responseError: function (response) {
-                switch (response.status) {
-                    case 401:
-                        $location.url('/auth/login');
-                        break;
-                    case 404:
-                        $location.url('/index/main');
-                        break;
-                }
+                // switch (response.status) {
+                //     case 401:
+                //         $location.url('/auth/login');
+                //         break;
+                //     case 404:
+                //         $location.url('/index/main');
+                //         break;
+                //     case 500:
+                //         $location.url('/index/main');
+                //         break;
+                // }
                 return $q.reject(response);
             }
       };

@@ -14,10 +14,11 @@
 
 Route::any('/', 'AuthController@index');
 
-Route::post('/auth/check', 'AuthController@check');
-Route::post('/auth/login', 'AuthController@login');
+Route::any('/auth/check', 'AuthController@check');
+Route::any('/auth/login', 'AuthController@login');
+Route::any('/auth/logout', 'AuthController@logout');
 
-Route::group(['namespace' => 'Admin'], function() {
+Route::group(['namespace' => 'Admin', 'middleware' => 'auth'], function() {
 
     Route::get('/admin/list', 'AdminController@list');
     Route::post('/admin/add', 'AdminController@add');

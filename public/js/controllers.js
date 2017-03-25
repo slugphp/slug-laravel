@@ -29,7 +29,7 @@
         $http.post(parseHost('/auth/check'), {}, postConfig).error(function(data, status, headers, config) {
             $state.go('auth.login');
         });
-        $scope.name = locals.get('admin_name');
+        $scope.name = locals.get('admin_name') || '管理员';
         $scope.AppConfig = AppConfig;
     });
 
@@ -182,7 +182,10 @@
                         length: aoData[4].value,
                         search: aoData[5].value.value,
                     },
-                    'success': fnCallback
+                    'success': fnCallback,
+                    'error': function () {
+                        window.location.reload();
+                    }
                 });
             })
             .withDataProp('data')
@@ -234,10 +237,12 @@
             $this.$http.post(url, params, postConfig).success(function(data, status, headers, config) {
                 success(data, status, headers, config);
             }).error(function(data, status, headers, config) {
-                $this.notify({
-                    message: typeof(data) == 'undefined' ? 'inner error' : data,
-                    classes: 'alert-danger',
-                });
+                if (data.length < 500) {
+                    $this.notify({
+                        message: typeof(data) == 'undefined' ? 'inner error' : data,
+                        classes: 'alert-danger',
+                    });
+                }
             });
             return this;
         }

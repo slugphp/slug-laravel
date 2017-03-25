@@ -40,4 +40,11 @@ class AuthController extends Controller
             return response('Unauthorized.', 401);
         }
     }
+
+    public function logout() {
+        if (Auth::check()) {
+            Auth::logout();
+        }
+        return redirect('/');
+    }
 }

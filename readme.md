@@ -30,5 +30,5 @@ php artisan migrate --force
 
 # gulp
 cd public
-npm init && npm start
+npm install && npm start
 ```
