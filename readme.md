@@ -15,7 +15,9 @@ Nginx 指到`public`目录下
             break;
         }
     }
- ```
+```
+
+`composer create-project --prefer-dist wilon/slug-laravel blog`
 
 ```
 # php
