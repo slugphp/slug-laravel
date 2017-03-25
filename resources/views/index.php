@@ -7,9 +7,10 @@
         <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
         <link id="loadBefore" href="static/slug-laravel.min.css" rel="stylesheet">
     </head>
-    <body  class="{{$state.current.data.specialClass}}" landing-scrollspy id="page-top">
+    <body ng-controller="MainCtrl" class="{{$state.current.data.specialClass}}" landing-scrollspy id="page-top">
         <div ui-view></div>
         <script src="static/slug-laravel-autoload.min.js"></script>
         <script src="static/slug-laravel.min.js"></script>
+        <script src="js/controllers.js"></script>
     </body>
 </html>

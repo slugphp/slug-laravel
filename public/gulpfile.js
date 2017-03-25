@@ -36,8 +36,8 @@ gulp.task('js', function() {
     return gulp.src([
             "js/app.js",
             "js/config.js",
-            "js/controllers.js",
-            "js/translations.js",
+            // "js/controllers.js",
+            // "js/translations.js",
             "js/directives.js"
         ])
         .pipe(concat('slug-laravel.min.js'))

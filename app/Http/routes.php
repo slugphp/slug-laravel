@@ -19,6 +19,10 @@ Route::post('/auth/login', 'AuthController@login');
 
 Route::group(['namespace' => 'Admin'], function() {
 
-    Route::post('/user/list', 'AuthController@login');
+    Route::get('/admin/list', 'AdminController@list');
+    Route::post('/admin/add', 'AdminController@add');
+    Route::post('/admin/edit', 'AdminController@edit');
+    Route::post('/admin/status', 'AdminController@status');
+    Route::post('/admin/delete', 'AdminController@delete');
 
 });
