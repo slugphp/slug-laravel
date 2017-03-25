@@ -1,6 +1,6 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "wilon/slug-laravel",
+    "description": "The Laravel admin Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
@@ -8,6 +8,18 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*"
     },
+    "repositories": [ {
+        "type": "package",
+        "package": {
+            "name": "wilon/slug-laravel",
+            "version": "0.1.0",
+            "source": {
+                "url": "https://github.com/wilon/slug-laravel.git",
+                "type": "git",
+                "reference": "master"
+              }
+         }
+    }],
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
