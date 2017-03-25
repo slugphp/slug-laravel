@@ -2,10 +2,13 @@
 
 Laravel 5.2
 
-### Install
+### Require
 
-Require
-    `php -v >= 5.5.9` `nodejs`
+```
+    php -v >= 5.5.9
+    composer
+    nodejs
+```
 
 Nginx 指到`public`目录下
 ```
@@ -17,18 +20,15 @@ Nginx 指到`public`目录下
     }
 ```
 
-`composer create-project --prefer-dist wilon/slug-laravel blog`
+### Install
 
 ```
-# php
-composer update
-composer run-script post-root-package-install
-composer run-script post-create-project-cmd
+    composer create-project --prefer-dist wilon/slug-laravel blog
 
-# db
-php artisan migrate --force
+    # db
+    php artisan migrate --force
 
-# gulp
-cd public
-npm install && npm start
+    # gulp
+    cd public
+    npm install && npm start
 ```
