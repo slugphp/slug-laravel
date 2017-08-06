@@ -47,7 +47,7 @@ class AdminController extends Controller
                 'email' => $request->email
             ])->first(['id']);
         if ($hasThisUser) {
-            return response('该用户已存在', 501);
+            return response('该用户已存在', 521);
         }
         $res = User::create([
             'name' => $request->name,
@@ -61,15 +61,32 @@ class AdminController extends Controller
     {
         $hasThisUser = User::where('id', $request->id)->first(['id']);
         if (!$hasThisUser) {
-            return response('该用户不存在', 501);
+            return response('该用户不存在', 521);
         }
+
         $userInfo = [
             'name' => $request->name,
             'email' => $request->email
         ];
+
+        $nameExist = User::where('name', $request->name)
+            ->where('id', '<>', $request->id)
+            ->first(['id']);
+        if ($nameExist) {
+            return response('该用户名已存在', 522);
+        }
+
+        $nameExist = User::where('email', $request->email)
+            ->where('id', '<>', $request->id)
+            ->first(['id']);
+        if ($nameExist) {
+            return response('该email已存在', 523);
+        }
+
         if ($request->password != '' && $request->password != '******') {
             $userInfo['password'] = bcrypt($request->password);
         }
+
         $res = User::where('id', $request->id)
           ->update($userInfo);
         return $res == true ? response('更新成功') : response('更新失败');
@@ -79,7 +96,7 @@ class AdminController extends Controller
     {
         $hasThisUser = User::where('id', $request->id)->first(['id']);
         if (!$hasThisUser) {
-            return response('该用户不存在', 501);
+            return response('该用户不存在', 521);
         }
         $res = User::where('id', $request->id)
           ->update(['status' => $request->status]);
@@ -90,7 +107,7 @@ class AdminController extends Controller
     {
         $hasThisUser = User::where('id', $request->id)->first(['id']);
         if (!$hasThisUser) {
-            return response('该用户不存在', 501);
+            return response('该用户不存在', 521);
         }
         $res = User::where('id', $request->id)
           ->delete();

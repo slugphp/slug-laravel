@@ -179,23 +179,36 @@ angular
             }
         };
     })
-    .factory('AuthInterceptor', function ($rootScope, $q, $location) {
+    .factory('AuthInterceptor', function ($rootScope, $q, $injector) {
         return {
+            // response: function (response) {
+            //     // console.log(response)
+            // },
             responseError: function (response) {
-                // switch (response.status) {
-                //     case 401:
-                //         $location.url('/auth/login');
-                //         break;
-                //     case 404:
-                //         $location.url('/index/main');
-                //         break;
-                //     case 500:
-                //         $location.url('/index/main');
-                //         break;
-                // }
+                switch (true) {
+                    case response.status == 401:
+                        $injector.get('$state').go('auth.login');
+                        break;
+                    case response.status == 404:
+                        $injector.get('$state').go('index.main');
+                        break;
+                    case response.status == 500:
+                        console.log(response)
+                        break;
+                    case response.status >= 520:
+                        try {
+                            $injector.get('notify').closeAll();
+                            $injector.get('notify')({message: response.data || 'Inner error!'});
+                        } catch (e) {
+                            alert(response.data || 'Inner error!')
+                        }
+                        break;
+                    default:
+                        break;
+                }
                 return $q.reject(response);
             }
-      };
+        };
     })
     .run(function($rootScope, $state) {
         $rootScope.$state = $state;

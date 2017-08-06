@@ -8,7 +8,7 @@
 
         $scope.user = {};
 
-        $http.post(parseHost('/auth/check'), {}, postConfig).success(function(data, status, headers, config) {
+        $http.post(parseHost('/auth/check')).success(function(data, status, headers, config) {
             $state.go('index.main');
         });
 
@@ -16,7 +16,7 @@
             var auth = Base64.encode($scope.user.name + '|' + $scope.user.password);
             $http.post(parseHost('/auth/login'), {
                 auth: auth
-            }, postConfig).success(function(data, status, headers, config) {
+            }).success(function(data, status, headers, config) {
                 $state.go('index.main');
                 locals.set('admin_name', data);
             }).error(function(data, status, headers, config) {
@@ -26,7 +26,7 @@
     });
 
     app.controller('MainCtrl', function ($scope, $state, $http, locals) {
-        $http.post(parseHost('/auth/check'), {}, postConfig).error(function(data, status, headers, config) {
+        $http.post(parseHost('/auth/check')).error(function(data, status, headers, config) {
             $state.go('auth.login');
         });
         $scope.name = locals.get('admin_name') || '管理员';
@@ -120,7 +120,7 @@
                 closeOnCancel: true
             }, function (isConfirm) {
                 if (isConfirm) {
-                    new Http($http, notify).post('/admin/delete', adminInfo, function(data, status, headers, config) {
+                    $http.post('/admin/delete', adminInfo).success(function(data, status, headers, config) {
                             $scope.dtInstance.reloadData(null, typeof(adminInfo.id) == "undefined");
                             notify({
                                 message: '删除成功！',
@@ -130,8 +130,9 @@
                 }
             });
         };
-    })
-    .controller('AdminModifyCtrl', function ($scope, $http, $uibModalInstance, notify, $sce, adminInfo, dtInstance) {
+    });
+
+    app.controller('AdminModifyCtrl', function ($scope, $http, $uibModalInstance, notify, $sce, adminInfo, dtInstance) {
 
         $scope.cancel = function () {
             $uibModalInstance.close();
@@ -149,7 +150,7 @@
         $scope.adminModifySubmit = function() {
             if ($scope.admin_form.$valid) {
                 var url = typeof($scope.adminInfo.id) == "undefined" ? "/admin/add" : "/admin/edit";
-                new Http($http, notify).post(url, $scope.adminInfo, function(data, status, headers, config) {
+                $http.post(url, $scope.adminInfo).success(function(data, status, headers, config) {
                         dtInstance.reloadData(null, typeof($scope.adminInfo.id) == "undefined");
                         $uibModalInstance.close();
                 });
@@ -159,7 +160,7 @@
         }
 
         $scope.changeStatus = function(status) {
-            new Http($http, notify).post('/admin/status', $scope.adminInfo, function(data, status, headers, config) {
+            $http.post('/admin/status', $scope.adminInfo).success(function(data, status, headers, config) {
                     dtInstance.reloadData(null, typeof($scope.adminInfo.id) == "undefined");
                     $uibModalInstance.close();
             });
@@ -193,60 +194,30 @@
             .withOption('rowCallback', rowCallback)
             .withOption('serverSide', true)
             .withOption('order', [orderNum, 'desc'])
-            .withLanguage(datatablesLangCn);
-    }
-
-    var datatablesLangCn = {
-        "sProcessing": "处理中...",
-        "sLengthMenu": "每页显示 _MENU_ 项结果",
-        "sZeroRecords": "没有匹配结果",
-        "sInfo": "本页显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-        "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-        "sInfoPostFix": "",
-        "sSearch": "搜索:",
-        "sUrl": "",
-        "sEmptyTable": "载入中...",
-        "sLoadingRecords": "载入中...",
-        "sInfoThousands": ",",
-        "oPaginate": {
-            "sFirst": "首页",
-            "sPrevious": "上页",
-            "sNext": "下页",
-            "sLast": "末页"
-        },
-        "oAria": {
-            "sSortAscending": ": 以升序排列此列",
-            "sSortDescending": ": 以降序排列此列"
-        }
-    }
-
-    var postConfig = {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        transformRequest: function(data){
-            return $.param(data);
-        }
-    }
-    function Http($http, notify) {
-        this.$http = $http;
-        this.notify = notify;
-        this.post = function (url, params, success) {
-            var $this = this;
-            $this.$http.post(url, params, postConfig).success(function(data, status, headers, config) {
-                success(data, status, headers, config);
-            }).error(function(data, status, headers, config) {
-                if (data.length < 500) {
-                    $this.notify({
-                        message: typeof(data) == 'undefined' ? 'inner error' : data,
-                        classes: 'alert-danger',
-                    });
+            .withLanguage({
+                "sProcessing": "处理中...",
+                "sLengthMenu": "每页显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "本页显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "载入中...",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
                 }
             });
-            return this;
-        }
     }
-
 
 })();

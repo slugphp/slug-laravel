@@ -7,7 +7,6 @@ Laravel 5.2
 ```
     php -v >= 5.5.9
     composer
-    nodejs
 ```
 
 Nginx 指到`public`目录下
@@ -23,12 +22,16 @@ Nginx 指到`public`目录下
 ### Install
 
 ```
-    composer create-project --prefer-dist wilon/slug-laravel blog
+    git clone git@github.com:slugphp/slug-laravel.git your-project-name
+    cd  your-project-name
 
-    # db
-    php artisan migrate --force
+    composer update
 
-    # gulp
-    cd public
-    npm install && npm start
+    cp .env.example .env
+    # change your .env param
+
+    php artisan migrate
+
+    php artisan register {admin-name} {admin-email}
+    # set password
 ```
