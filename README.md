@@ -29,7 +29,8 @@ Nginx 指到`public`目录下
 
     cp .env.example .env
     # change your .env param
-
+    
+    php artisan key:generate
     php artisan migrate
 
     php artisan register {admin-name} {admin-email}
